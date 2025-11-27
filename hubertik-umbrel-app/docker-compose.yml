@@ -9,6 +9,7 @@ services:
     volumes:
       - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
       - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
+      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     environment:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -30,6 +31,7 @@ services:
       - /home/umbrel/umbrel/home/Documents/anny/frontend:/usr/src/app
       - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
       - /home/umbrel/umbrel/home/Documents/anny/backend/json:/usr/src/app/json
+      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     environment:
       - USERS_DB_PATH=/usr/src/app/databases/users.db
