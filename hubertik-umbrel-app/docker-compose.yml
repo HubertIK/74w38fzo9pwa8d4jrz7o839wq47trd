@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: ghcr.io/puppeteer/puppeteer:latest
+    image: node:18-bullseye
     container_name: anny-bot
     restart: unless-stopped
-    user: root # Run as root to ensure write access to volumes and npm install
+    user: root
     volumes:
       - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
       - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
@@ -13,13 +13,13 @@ services:
     working_dir: /usr/src/app
     environment:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      - CHROME_BIN=/usr/bin/google-chrome-stable
+      - CHROME_BIN=/usr/bin/chromium
       - DATA_DIR=/usr/src/app
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
       - JWT_DIR=/usr/src/app/jwt
-    command: sh -c "npm install && node scheduler.js"
+    command: sh -c "apt-get update && apt-get install -y chromium && npm install && node scheduler.js"
     networks:
       - anny_network
 
