@@ -1,8 +1,8 @@
 manifestVersion: 1
-id: sparkles-hello-world
-name: Hello World
+id: hubertik-umbrel-app
+name: App
 tagline: Replace this tagline with your app's tagline
-icon: https://svgur.com/i/mvA.svg
+icon: https://anny.eu/icons/logo_color.svg
 category: Development
 version: "1.0.0"
 port: 4000
