@@ -1,14 +1,39 @@
-version: "3.7"
+version: '3.8'
 
 services:
-
-  app_proxy:
+  anny-bot:
+    image: zenika/alpine-chrome:with-node
+    container_name: anny-bot
+    restart: unless-stopped
+    volumes:
+      - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
+      - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
+    working_dir: /usr/src/app
     environment:
-      # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: sparkles-hello-world_server_1
-      APP_PORT: 3000
-    
-  server:
-    image: getumbrel/community-app-store-hello-world:latest
-    user: "1000:1000"
-    init: true
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - CHROME_BIN=/usr/bin/chromium-browser
+      - DATA_DIR=/usr/src/app
+      - USERS_DB_PATH=/usr/src/app/databases/users.db
+      - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
+      - JSON_DIR=/usr/src/app/json
+      - JWT_DIR=/usr/src/app/jwt
+    command: sh -c "npm install && node scheduler.js"
+    # Alternatively, if you want to run it manually or debug:
+    # command: tail -f /dev/null
+
+  anny-frontend:
+    image: node:18-alpine
+    container_name: anny-frontend
+    restart: unless-stopped
+    volumes:
+      - /home/umbrel/umbrel/home/Documents/anny/frontend:/usr/src/app
+      - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
+      - /home/umbrel/umbrel/home/Documents/anny/backend/json:/usr/src/app/json
+    working_dir: /usr/src/app
+    environment:
+      - USERS_DB_PATH=/usr/src/app/databases/users.db
+      - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
+      - JSON_DIR=/usr/src/app/json
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && node app.js"
