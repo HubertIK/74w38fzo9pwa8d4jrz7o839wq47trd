@@ -18,8 +18,8 @@ services:
       - JSON_DIR=/usr/src/app/json
       - JWT_DIR=/usr/src/app/jwt
     command: sh -c "npm install && node scheduler.js"
-    # Alternatively, if you want to run it manually or debug:
-    # command: tail -f /dev/null
+    networks:
+      - anny_network
 
   anny-frontend:
     image: node:18-alpine
@@ -34,6 +34,17 @@ services:
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
-    ports:
-      - "3000:3000"
     command: sh -c "npm install && node app.js"
+    networks:
+      - anny_network
+
+  app_proxy:
+    environment:
+      APP_HOST: anny-frontend
+      APP_PORT: "3000"
+    networks:
+      - anny_network
+
+networks:
+  anny_network:
+    driver: bridge
