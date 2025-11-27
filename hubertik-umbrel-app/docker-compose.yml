@@ -2,16 +2,17 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: zenika/alpine-chrome:with-node
+    image: ghcr.io/puppeteer/puppeteer:latest
     container_name: anny-bot
     restart: unless-stopped
+    user: root # Run as root to ensure write access to volumes and npm install
     volumes:
       - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
       - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
     working_dir: /usr/src/app
     environment:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      - CHROME_BIN=/usr/bin/chromium-browser
+      - CHROME_BIN=/usr/bin/google-chrome-stable
       - DATA_DIR=/usr/src/app
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
@@ -22,7 +23,7 @@ services:
       - anny_network
 
   anny-frontend:
-    image: node:18-alpine
+    image: node:18
     container_name: anny-frontend
     restart: unless-stopped
     volumes:
@@ -34,6 +35,8 @@ services:
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
+    ports:
+      - "3000:3000"
     command: sh -c "npm install && node app.js"
     networks:
       - anny_network
