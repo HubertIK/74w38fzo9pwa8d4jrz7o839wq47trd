@@ -5,7 +5,7 @@ tagline: Replace this tagline with your app's tagline
 icon: https://anny.eu/icons/logo_color.svg
 category: Development
 version: "1.0.0"
-port: 4000
+port: 3000
 description: >-
   Add your app's description here.
 
@@ -19,6 +19,9 @@ submission: https://github.com/getumbrel/umbrel-hello-world-app
 repo: https://github.com/getumbrel/umbrel-hello-world-app
 support: https://github.com/getumbrel/umbrel-hello-world-app/issues
 gallery:
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
 releaseNotes: >-
   Add what's new in the latest version of your app here.
 dependencies: []
