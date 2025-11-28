@@ -1,10 +1,10 @@
 manifestVersion: 1
 id: hubertik-umbrel-app
-name: App
-tagline: Replace this tagline with your app's tagline
+name: Anny
+tagline: Anny Service
 icon: https://anny.eu/icons/logo_color.svg
 category: Development
-version: "1.0.0"
+version: "1.0.1"
 port: 3000
 description: >-
   Add your app's description here.
@@ -12,7 +12,7 @@ description: >-
 
   You can also add newlines!
 
-developer: Umbrel
+developer: HubertIK
 website: https://umbrel.com
 submitter: Umbrel
 submission: https://github.com/getumbrel/umbrel-hello-world-app
