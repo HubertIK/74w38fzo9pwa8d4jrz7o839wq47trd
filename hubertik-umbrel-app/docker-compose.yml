@@ -2,24 +2,24 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: ghcr.io/puppeteer/puppeteer:latest
+    image: node:18-alpine
     container_name: anny-bot
     restart: unless-stopped
-    # user: root # Puppeteer image runs as pptruser by default, which is good for security
+    user: root
     volumes:
-      - /home/umbrel/umbrel/home/Documents/anny/backend:/home/pptruser/app
-      - /home/umbrel/umbrel/home/Documents/anny/databases:/home/pptruser/app/databases
-      - /home/pptruser/app/node_modules
-    working_dir: /home/pptruser/app
+      - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
+      - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
+      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
     environment:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      # - CHROME_BIN=/usr/bin/chromium # Not needed, Puppeteer uses bundled Chrome
-      - DATA_DIR=/home/pptruser/app
-      - USERS_DB_PATH=/home/pptruser/app/databases/users.db
-      - RESOURCES_DB_PATH=/home/pptruser/app/databases/resources.db
-      - JSON_DIR=/home/pptruser/app/json
-      - JWT_DIR=/home/pptruser/app/jwt
-    command: sh -c "npm install && node scheduler.js"
+      - CHROME_BIN=/usr/bin/chromium-browser
+      - DATA_DIR=/usr/src/app
+      - USERS_DB_PATH=/usr/src/app/databases/users.db
+      - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
+      - JSON_DIR=/usr/src/app/json
+      - JWT_DIR=/usr/src/app/jwt
+    command: sh -c "apk add --no-cache chromium && npm install && node scheduler.js"
     networks:
       - anny_network
 
