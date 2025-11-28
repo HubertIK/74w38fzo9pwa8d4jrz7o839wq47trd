@@ -37,8 +37,6 @@ services:
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
-    ports:
-      - "3000:3000"
     command: sh -c "npm install && node app.js"
     networks:
       - anny_network
