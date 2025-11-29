@@ -2,7 +2,7 @@ manifestVersion: 1
 id: hubertik-umbrel-app
 name: Anny
 tagline: Anny Service
-icon: https://anny.eu/icons/logo_color.svg
+icon: https://raw.githubusercontent.com/HubertIK/74w38fzo9pwa8d4jrz7o839wq47trd/master/hubertik-umbrel-app/logo.svg
 category: Development
 version: "1.0.1"
 port: 3000
