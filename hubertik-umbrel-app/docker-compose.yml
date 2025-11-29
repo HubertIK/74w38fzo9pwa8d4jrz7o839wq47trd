@@ -42,6 +42,8 @@ services:
     command: sh -c "npm install && node app.js"
     networks:
       - anny_network
+    ports:
+      - "3000:3000"
 
   app_proxy:
     environment:
