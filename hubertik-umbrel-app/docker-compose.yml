@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: node:18-alpine
+    image: ghcr.io/canardconfit/puppeteer-docker:latest
     container_name: anny-bot
     restart: unless-stopped
     user: root
@@ -13,13 +13,14 @@ services:
     working_dir: /usr/src/app
     environment:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      - CHROME_BIN=/usr/bin/chromium-browser
+      - CHROME_BIN=/chrome-linux/chrome
       - DATA_DIR=/usr/src/app
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
       - JWT_DIR=/usr/src/app/jwt
-    command: sh -c "apk add --no-cache chromium && npm install && node scheduler.js"
+      - TZ=Europe/Berlin
+    command: sh -c "npm install && node scheduler.js"
     networks:
       - anny_network
 
@@ -37,6 +38,7 @@ services:
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
+      - TZ=Europe/Berlin
     command: sh -c "npm install && node app.js"
     networks:
       - anny_network
