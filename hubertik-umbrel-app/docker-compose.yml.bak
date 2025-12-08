@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: ghcr.io/canardconfit/puppeteer-docker:latest
+    image: node:18
     container_name: anny-bot
     restart: unless-stopped
     user: root
@@ -12,15 +12,16 @@ services:
       - /usr/src/app/node_modules
     working_dir: /usr/src/app
     environment:
-      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      - CHROME_BIN=/chrome-linux/chrome
       - DATA_DIR=/usr/src/app
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
       - JWT_DIR=/usr/src/app/jwt
       - TZ=Europe/Berlin
-    command: sh -c "npm install && node scheduler.js"
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    command: >
+      sh -c " apt-get update && apt-get install -y chromium chromium-driver fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 --no-install-recommends && rm -rf /var/lib/apt/lists/* && npm install && node scheduler.js "
     networks:
       - anny_network
 
