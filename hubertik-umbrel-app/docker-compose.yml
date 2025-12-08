@@ -9,7 +9,6 @@ services:
     volumes:
       - /home/umbrel/umbrel/home/Documents/anny/backend:/usr/src/app
       - /home/umbrel/umbrel/home/Documents/anny/databases:/usr/src/app/databases
-      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     environment:
       - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
@@ -32,12 +31,9 @@ services:
         else
           echo '✅ Chromium ready';
         fi;
-        if [ ! -d 'node_modules' ]; then
-          echo '📦 Installing npm packages...';
-          npm install;
-        else
-          echo '✅ npm packages ready';
-        fi;
+        echo '📦 Installing npm packages...';
+        npm install --prefer-offline --no-audit;
+        echo '✅ npm packages ready';
         echo '🎬 Starting scheduler...';
         exec node scheduler.js
       "
