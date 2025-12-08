@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   anny-bot:
-    image: ghcr.io/canardconfit/puppeteer-docker:latest
+    image: node:20-bullseye
     container_name: anny-bot
     restart: unless-stopped
     user: root
@@ -12,15 +12,35 @@ services:
       - /usr/src/app/node_modules
     working_dir: /usr/src/app
     environment:
-      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-      - CHROME_BIN=/chrome-linux/chrome
+      - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+      - PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
       - DATA_DIR=/usr/src/app
       - USERS_DB_PATH=/usr/src/app/databases/users.db
       - RESOURCES_DB_PATH=/usr/src/app/databases/resources.db
       - JSON_DIR=/usr/src/app/json
       - JWT_DIR=/usr/src/app/jwt
       - TZ=Europe/Berlin
-    command: sh -c "npm install && node scheduler.js"
+    command: >
+      bash -c "
+        echo '🚀 Starting Anny with Playwright...';
+        if ! command -v chromium &> /dev/null; then
+          echo '📦 Installing Chromium for ARM64...';
+          apt-get update -qq &&
+          apt-get install -y -qq chromium fonts-liberation libnss3 libxss1 libappindicator3-1 libasound2 > /dev/null 2>&1 &&
+          rm -rf /var/lib/apt/lists/* &&
+          echo '✅ Chromium installed!';
+        else
+          echo '✅ Chromium ready';
+        fi;
+        if [ ! -d 'node_modules' ]; then
+          echo '📦 Installing npm packages...';
+          npm install;
+        else
+          echo '✅ npm packages ready';
+        fi;
+        echo '🎬 Starting scheduler...';
+        exec node scheduler.js
+      "
     networks:
       - anny_network
 
